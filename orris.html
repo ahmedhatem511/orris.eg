@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orris | Luxury Perfumery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap');
+        
+        :root {
+            --primary: #1a1a1a;
+            --secondary: #5e4b3b;
+            --accent: #c7a97e;
+            --light: #f5f1e9;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--primary);
+            background-color: var(--light);
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://placehold.co/1920x1080');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+        }
+        
+        .perfume-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .nav-link::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width .3s;
+            margin-top: 2px;
+        }
+    </style>
+    <script>
+        let selectedPerfumes = [];
+        let totalPrice = 0;
+
+        function changeLanguage(lang) {
+            if (lang === 'ar') {
+                document.getElementById('site-title').innerText = 'أوريس';
+                document.getElementById('home-link').innerText = 'الرئيسية';
+                document.getElementById('collections-link').innerText = 'المجموعات';
+                document.getElementById('philosophy-link').innerText = 'فلسفتنا';
+                document.getElementById('journal-link').innerText = 'المجلة';
+                document.getElementById('contact-link').innerText = 'اتصل بنا';
+                document.getElementById('hero-title').innerText = 'جوهر الخلود';
+                document.getElementById('hero-description').innerText = 'مصنوع من مكونات نادرة ومقطر عبر أجيال من خبرة صناعة العطور';
+                document.getElementById('collections-title').innerText = 'مجموعات فاخرة';
+                document.getElementById('collections-description').innerText = 'كل عطر يروي قصة، مصنوعة بدقة من نباتات نادرة ومواد عطرية مستخرجة من جميع أنحاء العالم';
+                document.querySelectorAll('.perfume-card h3').forEach((el, index) => {
+                    if (index === 0) {
+                        el.innerText = 'أوريس بلانك للرجال';
+                    } else if (index === 1) {
+                        el.innerText = 'أوريس سول للنساء';
+                    } else {
+                        el.innerText = 'عرض خاص';
+                    }
+                });
+                document.querySelectorAll('.perfume-card p').forEach((el, index) => {
+                    if (index === 0 || index === 1) {
+                        el.innerText = 'سعر: 450 جنيه مصري';
+                    } else {
+                        el.innerText = 'احصل على أوريس بلانك وأوريس سول معًا بسعر 800 جنيه مصري';
+                    }
+                });
+                document.getElementById('lang-button').innerText = 'English';
+                document.getElementById('lang-button').setAttribute('onclick', "changeLanguage('en')");
+            } else {
+                document.getElementById('site-title').innerText = 'ORRIS';
+                document.getElementById('home-link').innerText = 'Home';
+                document.getElementById('collections-link').innerText = 'Collections';
+                document.getElementById('philosophy-link').innerText = 'Philosophy';
+                document.getElementById('journal-link').innerText = 'Journal';
+                document.getElementById('contact-link').innerText = 'Contact';
+                document.getElementById('hero-title').innerText = 'The Essence of Timeless';
+                document.getElementById('hero-description').innerText = 'Crafted with rare ingredients and distilled through generations of perfumery expertise';
+                document.getElementById('collections-title').innerText = 'Luxury Collections';
+                document.getElementById('collections-description').innerText = 'Each fragrance tells a story, meticulously crafted from rare botanicals and essences sourced from around the world';
+                document.querySelectorAll('.perfume-card h3').forEach((el, index) => {
+                    if (index === 0) {
+                        el.innerText = 'Orris Blanc for Men';
+                    } else if (index === 1) {
+                        el.innerText = 'Orris Sol for Women';
+                    } else {
+                        el.innerText = 'Special Offer';
+                    }
+                });
+                document.querySelectorAll('.perfume-card p').forEach((el, index) => {
+                    if (index === 0 || index === 1) {
+                        el.innerText = 'Price: 450 EGP';
+                    } else {
+                        el.innerText = 'Get Orris Blanc and Orris Sol together for 800 EGP';
+                    }
+                });
+                document.getElementById('lang-button').innerText = 'العربية';
+                document.getElementById('lang-button').setAttribute('onclick', "changeLanguage('ar')");
+            }
+        }
+
+        function addToCart(perfume, price) {
+            selectedPerfumes.push(perfume);
+            totalPrice += price;
+            alert(perfume + " has been added to your cart.");
+            showCheckout();
+        }
+
+        function showCheckout() {
+            document.getElementById('checkout-section').style.display = 'block';
+            document.getElementById('selected-products').innerText = selectedPerfumes.join(', ');
+            document.getElementById('total-price').innerText = totalPrice + ' EGP';
+        }
+
+        function payWithVodafoneCash() {
+            const phoneNumber = '01023773203';
+            alert(`Please pay to the following Vodafone Cash number: ${phoneNumber}\nTotal Amount: ${totalPrice} EGP`);
+            sendOrderConfirmation();
+        }
+
+        function payOnDelivery() {
+            alert(`You have chosen Cash on Delivery.\nTotal Amount: ${totalPrice} EGP`);
+            sendOrderConfirmation();
+        }
+
+        function sendOrderConfirmation() {
+            const firstName = document.getElementById('first-name').value;
+            const lastName = document.getElementById('last-name').value;
+            const phone = document.getElementById('phone').value;
+            const address = document.getElementById('address').value;
+
+            const fullMessage = `Name: ${firstName} ${lastName}\nPhone: ${phone}\nAddress: ${address}\nSelected Perfumes: ${selectedPerfumes.join(', ')}\nTotal Price: ${totalPrice} EGP`;
+            console.log(fullMessage); // This is where you would send the email in a real application
+
+            // Simulate sending an email (you would replace this with actual email sending logic)
+            alert("Your order has been confirmed! A confirmation email has been sent to orris.eg@gmail.com.");
+            document.getElementById('contact-form').reset();
+            selectedPerfumes = [];
+            totalPrice = 0;
+            document.getElementById('checkout-section').style.display = 'none';
+        }
+
+        function sendMessage(event) {
+            event.preventDefault();
+            // This function is no longer needed since we handle order confirmation in the payment functions
+        }
+    </script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-white bg-opacity-90 backdrop-blur-sm shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex-shrink-0 flex items-center">
+                    <h1 id="site-title" class="text-2xl font-bold tracking-tight" style="color: var(--secondary);">ORRIS</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-center space-x-8">
+                        <a href="#" class="nav-link text-sm font-medium" style="color: var(--primary);" id="home-link">Home</a>
+                        <a href="#collections" class="nav-link text-sm font-medium" style="color: var(--primary);" id="collections-link">Collections</a>
+                        <a href="#philosophy" class="nav-link text-sm font-medium" style="color: var(--primary);" id="philosophy-link">Philosophy</a>
+                        <a href="#journal" class="nav-link text-sm font-medium" style="color: var(--primary);" id="journal-link">Journal</a>
+                        <a href="#contact" class="nav-link text-sm font-medium" style="color: var(--primary);" id="contact-link">Contact</a>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <button id="lang-button" class="bg-transparent px-4 py-2 border border-black text-sm font-medium hover:bg-black hover:text-white transition duration-300" onclick="changeLanguage('ar')">العربية</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section flex items-center justify-center text-center text-white relative">
+        <div class="absolute inset-0 bg-black opacity-40"></div>
+        <div class="relative z-10 px-6">
+            <h1 id="hero-title" class="text-5xl md:text-7xl font-bold mb-6">The Essence of Timeless</h1>
+            <p id="hero-description" class="text-xl md:text-2xl mb-10 max-w-3xl mx-auto">Crafted with rare ingredients and distilled through generations of perfumery expertise</p>
+            <button class="bg-transparent px-8 py-3 border border-white text-lg font-medium hover:bg-white hover:text-black transition duration-300">Discover Our Scents</button>
+        </div>
+    </section>
+
+    <!-- Featured Collection -->
+    <section id="collections" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-sm uppercase tracking-widest" style="color: var(--accent);">Our Signature</span>
+                <h2 id="collections-title" class="text-3xl md:text-4xl font-bold mt-2 mb-4">Luxury Collections</h2>
+                <p id="collections-description" class="max-w-2xl mx-auto">Each fragrance tells a story, meticulously crafted from rare botanicals and essences sourced from around the world</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                <!-- Product 1: Orris Blanc for Men -->
+                <div class="perfume-card bg-white p-6 rounded-lg shadow-md transition duration-300">
+                    <div class="mb-4 overflow-hidden rounded-lg">
+                        <img src="images/orris-blanc-for-men.jpg" alt="Orris Blanc for Men perfume bottle" class="w-full h-auto object-cover">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Orris Blanc for Men</h3>
+                    <p class="text-sm mb-4" style="color: var(--secondary);">Eau de Parfum</p>
+                    <p class="text-sm mb-4">سعر: 450 جنيه مصري</p>
+                    <button class="w-full bg-black text-white py-2 text-sm hover:bg-gray-800 transition duration-300" onclick="addToCart('Orris Blanc for Men', 450)">Add to Cart</button>
+                </div>
+                
+                <!-- Product 2: Orris Sol for Women -->
+                <div class="perfume-card bg-white p-6 rounded-lg shadow-md transition duration-300">
+                    <div class="mb-4 overflow-hidden rounded-lg">
+                        <img src="images/orris-sol-for-women.jpg" alt="Orris Sol for Women perfume bottle" class="w-full h-auto object-cover">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Orris Sol for Women</h3>
+                    <p class="text-sm mb-4" style="color: var(--secondary);">Eau de Parfum</p>
+                    <p class="text-sm mb-4">سعر: 450 جنيه مصري</p>
+                    <button class="w-full bg-black text-white py-2 text-sm hover:bg-gray-800 transition duration-300" onclick="addToCart('Orris Sol for Women', 450)">Add to Cart</button>
+                </div>
+                
+                <!-- Special Offer -->
+                <div class="perfume-card bg-white p-6 rounded-lg shadow-md transition duration-300">
+                    <div class="mb-4 overflow-hidden rounded-lg">
+                        <img src="images/special-offer.jpg" alt="Special Offer for Orris perfumes" class="w-full h-auto object-cover">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">عرض خاص</h3>
+                    <p class="text-sm mb-4">احصل على Orris Blanc وOrris Sol معًا بسعر 800 جنيه مصري</p>
+                    <button class="w-full bg-black text-white py-2 text-sm hover:bg-gray-800 transition duration-300" onclick="addToCart('Special Offer', 800)">Add to Cart</button>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <button class="px-8 py-3 border border-black text-sm font-medium hover:bg-black hover:text-white transition duration-300">View All Collections</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Checkout Section -->
+    <section id="checkout-section" class="py-20 bg-white" style="display: none;">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-3xl font-bold mb-6">Checkout</h2>
+            <form id="contact-form" onsubmit="sendMessage(event)">
+                <div class="mb-6">
+                    <label for="first-name" class="block text-sm font-medium mb-1">First Name</label>
+                    <input type="text" id="first-name" class="w-full px-4 py-2 border rounded focus:outline-none focus:border-black" required>
+                </div>
+                <div class="mb-6">
+                    <label for="last-name" class="block text-sm font-medium mb-1">Last Name</label>
+                    <input type="text" id="last-name" class="w-full px-4 py-2 border rounded focus:outline-none focus:border-black" required>
+                </div>
+                <div class="mb-6">
+                    <label for="phone" class="block text-sm font-medium mb-1">Phone</label>
+                    <input type="tel" id="phone" class="w-full px-4 py-2 border rounded focus:outline-none focus:border-black" required>
+                </div>
+                <div class="mb-6">
+                    <label for="address" class="block text-sm font-medium mb-1">Full Address</label>
+                    <input type="text" id="address" class="w-full px-4 py-2 border rounded focus:outline-none focus:border-black" required>
+                </div>
+                <div class="mb-6">
+                    <p class="font-medium">Selected Products: <span id="selected-products"></span></p>
+                    <p class="font-medium">Total Price: <span id="total-price"></span></p>
+                </div>
+                <button type="button" class="w-full bg-black text-white py-3 hover:bg-gray-800 transition duration-300" onclick="payWithVodafoneCash()">Pay with Vodafone Cash</button>
+                <button type="button" class="w-full bg-black text-white py-3 hover:bg-gray-800 transition duration-300 mt-4" onclick="payOnDelivery()">Cash on Delivery</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-16" style="background-color: var(--primary); color: white;">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">ORRIS</h3>
+                    <p class="text-sm opacity-70">The essence of timeless perfumery since 1928</p>
+                </div>
+                <div>
+                    <h4 class="font-medium mb-4">Collections</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="opacity-70 hover:opacity-100 transition duration-200 text-sm">Women's</a></li>
+                        <li><a href="#" class="opacity-70 hover:opacity-100 transition duration-200 text-sm">Men's</a></li>
+                        <li><a href="#" class="opacity-70 hover:opacity-100 transition duration-200 text-sm">Unisex</a></li>
+                        <li><a href="#" class="opacity-70 hover:opacity-100 transition duration-200 text-sm">Limited Editions</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium mb-4">Information</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="opacity-70 hover:opacity-100 transition duration-200 text-sm">About
